@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 23:01:02 by megrisse          #+#    #+#             */
-/*   Updated: 2022/06/28 14:05:30 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/06/28 16:51:11 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ long long	time_in_ms(struct timeval now)
 	return (ms);
 }
 
-int	ft_alloc(char *src, size_t size)
+int	ft_alloc(void *src, size_t size)
 {
 	*(void **)src = malloc(size);
 	if (*(void **)src == NULL)
@@ -64,10 +64,15 @@ int	ft_alloc(char *src, size_t size)
 	return (SUCCES);
 }
 
-// void	print_routine(t_philo *philos, char *str)
-// {
-// 	long long		ms;
-// 	struct timeval	time;
+void	print_routine(t_philo *philos, char *str)
+{
+	long long		ms;
+	struct timeval	time;
 
-// 	gettimeofday(&time, NULL);
-// }
+	pthread_mutex_lock(&philos->infos->mutex);
+	gettimeofday(&time, NULL);
+	ms = time_in_ms(time) - time_in_ms(philos->infos->creation_time);
+	if (!philos->infos->finish)
+		printf("%lld\t%d\t%s\n", ms, philos->num + 1, str);
+	pthread_mutex_unlock(&philos->infos->mutex);
+}
