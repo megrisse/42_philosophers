@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/hmeur/Desktop/philo'
+echo "making philos"
+make: Leaving directory '/home/hmeur/Desktop/philo'
+ 

@@ -1,74 +1,70 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/25 23:51:54 by megrisse          #+#    #+#             */
-/*   Updated: 2022/06/28 16:59:56 by megrisse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "philo.h"
 
-static void	get_args(t_infos *infos, int ac, char **av)
-{
-	infos->philos_num = ft_atoi(av[1]);
-	infos->time_to_die = ft_atoi(av[2]);
-	infos->time_to_eat = ft_atoi(av[3]);
-	infos->time_to_sleep = ft_atoi(av[4]);
-	if (ac == 6)
-		infos->must_eat_each = ft_atoi(av[5]);
-}
-
-static int	check_args(t_infos *infos, int ac)
-{
-	if (ac == 6 && infos->must_eat_each <= 0)
-		return (print_error("Wrong number of must eat each\n"));
-	else if (infos->philos_num < 0)
-		return (print_error("Wrong number of philos\n"));
-	else if (infos->time_to_die < 0)
-		return (print_error("Wrong time to die\n"));
-	else if (infos->time_to_eat < 0)
-		return (print_error("Wrong time to eat\n"));
-	else if (infos->time_to_sleep < 0)
-		return (print_error("Wrong time to sleep\n"));
-	else
-		return (SUCCES);
-}
-
-static int	init_philos(t_infos *infos)
+int	check_args(char **av)
 {
 	int	i;
+	int	j;
 
-	pthread_mutex_init(&infos->mutex, NULL);
-	if (ft_alloc(&infos->philos, sizeof(t_philo) * infos->philos_num) || \
-		ft_alloc(&infos->forks, sizeof(pthread_mutex_t) * infos->philos_num))
-		return (print_error("ALLOCATION ERROR"));
-	i = 0;
-	while (i < infos->philos_num)
+	i = 1;
+	j = 0;
+	while (av[i] != NULL && i <= 6)
 	{
-		infos->philos[i].num = i;
-		pthread_mutex_init(&infos->forks[i], NULL);
-		pthread_mutex_init(&infos->philos[i].check_mutex, NULL);
-		if (i == 0)
-			infos->philos[i].left = &infos->forks[infos->philos_num - 1];
-		else
-		infos->philos[i].left = &infos->forks[i - 1];
-		infos->philos[i].right = &infos->forks[i];
-		infos->philos[i].infos = infos;
-		++i;
+		while (av[i][j] != 0 && av[i][j] >= '0' && av[i][j] <= '9')
+			j++;
+		if (av[i][j] != 0)
+			return (ERROR);
+		j = 0;
+		i++;
 	}
 	return (SUCCES);
 }
 
-int	initialize(t_infos *infos, int ac, char **av)
+int	read_args(t_args **args, char **av, int ac)
 {
-	get_args(infos, ac, av);
-	if (check_args(infos, ac))
+	if (check_args(av) != 0)
 		return (ERROR);
-	if (init_philos(infos))
-		return (ERROR);
+	*args = (t_args *)malloc(sizeof(t_args));
+	if (!args)
+		return (free(args), ERROR);
+	(*args)->n_philo = ft_atoi(av[1]);
+	(*args)->time_to_die = ft_atoi(av[2]);
+	(*args)->time_to_eat = ft_atoi(av[3]);
+	(*args)->time_to_sleep = ft_atoi(av[4]);
+	(*args)->must_eat_each = -1;
+	if (ac == 6)
+		(*args)->must_eat_each = ft_atoi(av[5]);
+	(*args)->creation_time = get_time();
 	return (SUCCES);
+}
+
+t_philo	*new_node(t_philo *node, int index, t_args *args)
+{
+	node = (t_philo *)malloc(sizeof(t_philo));
+    //if (!node)
+    //    return (NULL)
+	node->index = index + 1;
+	node->args = args;
+	node->next = NULL;
+	return (node);
+}
+
+void	add_back(t_philo **philos, t_philo *philo)
+{
+	struct t_philo	*back;
+
+	if ((*philos) == NULL)
+		*philos = philo;
+	if ((*philos)->next == NULL)
+	{
+		(*philos)->next = philo;
+		philo->next = *philos;
+	}
+	else
+	{
+		back = (*philos)->next;
+		while (back->next != *philos)
+			back = back->next;
+		back->next = philo;
+		philo->next = (*philos);
+	}
 }

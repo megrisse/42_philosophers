@@ -1,78 +1,70 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/27 23:01:02 by megrisse          #+#    #+#             */
-/*   Updated: 2022/06/28 16:51:11 by megrisse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+long	ft_atoi(char *str)
 {
-	int	x;
-	int	signe;
-	int	rst;
+	long	resultat;
+	long	signe;
+	int		i;
 
-	x = 0;
+	resultat = 0;
 	signe = 1;
-	rst = 0;
-	while ((str[x] >= 9 && str[x] <= 13) || str[x] == 32)
-		x++;
-	if (str[x] == '-' || str[x] == '+')
-	{
-		if (str[x] == '-')
-			signe *= -1;
-		x++;
-	}
-	while (str[x] >= 48 && str[x] <= 57)
-	{
-		rst = rst * 10 + (str[x++] - 48);
-	}
-	return (rst * signe);
-}
-
-int	print_error(char *str)
-{
-	int	i;
-
 	i = 0;
-	while (str[i++])
-		write(2, &str[i], 1);
-	return (ERROR);
+	while (((str[i] >= 9) && (str[i] <= 13)) || (str[i] == ' '))
+		i++;
+	if ((str[i] == '+') || (str[i] == '-'))
+	{
+		if (str[i] == '-')
+			signe = -signe;
+		i++;
+	}
+	while ((str[i] >= '0') && (str[i] <= '9'))
+	{
+		resultat = (resultat * 10) + (str[i] - 48);
+		i++;
+	}
+	return (resultat * signe);
 }
 
-long long	time_in_ms(struct timeval now)
+void	ft_usleep(long long time)
 {
-	long long	ms;
+	long long	start;
 
-	ms = now.tv_sec * 1000;
-	ms += now.tv_usec / 1000;
-	return (ms);
+	start = get_time();
+	while (get_time() - start < time)
+		usleep(50);
 }
 
-int	ft_alloc(void *src, size_t size)
+long long	get_time(void)
 {
-	*(void **)src = malloc(size);
-	if (*(void **)src == NULL)
-		return (ERROR);
-	memset(*(void **)src, 0, size);
-	return (SUCCES);
-}
-
-void	print_routine(t_philo *philos, char *str)
-{
-	long long		ms;
 	struct timeval	time;
 
-	pthread_mutex_lock(&philos->infos->mutex);
 	gettimeofday(&time, NULL);
-	ms = time_in_ms(time) - time_in_ms(philos->infos->creation_time);
-	if (!philos->infos->finish)
-		printf("%lld\t%d\t%s\n", ms, philos->num + 1, str);
-	pthread_mutex_unlock(&philos->infos->mutex);
+	return (time.tv_sec * 1000000 + time.tv_usec);
+}
+
+void	free_philos(t_philo *philos, int x)
+{
+	t_philo	*ptr;
+	int		i;
+
+	ptr = philos;
+	i = x;
+	i = 0;
+	//if (x == 1)
+	//	destroy_mutex(philos);
+	if (!philos)
+		return ;
+	while (1)
+	{
+		if (i == ptr->args->n_philo - 1)
+		{
+			free(ptr->args);
+			free(ptr);
+			return ;
+		}
+		philos = philos->next;
+		free(ptr);
+		ptr = philos;
+		i++;
+	}
 }

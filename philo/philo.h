@@ -1,69 +1,56 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/25 18:53:11 by megrisse          #+#    #+#             */
-/*   Updated: 2022/06/28 17:29:47 by megrisse         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#ifndef PHILO_H
+# ifndef PHILO_H
 # define PHILO_H
 
-# include <sys/time.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include <unistd.h>
 # include <pthread.h>
+# include <stdlib.h>
+# include <string.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <sys/time.h>
 
-# define SUCCES 0
-# define ERROR 1
+#define SUCCES 0
+#define ERROR  1
 
-typedef struct s_philo
+typedef struct t_args
 {
-	int				num;
-	int				num_of_eat;
-	pthread_t		thread;
-	pthread_mutex_t	*left;
-	pthread_mutex_t	*right;
-	pthread_mutex_t	check_mutex;
-	struct s_infos	*infos;
-	struct timeval	last_meal;
-}				t_philo;
-
-typedef struct s_infos
-{
-	int				philos_num;
+	int				n_philo;
 	int				time_to_die;
 	int				time_to_eat;
-	int				must_eat_each;
 	int				time_to_sleep;
-	int				sated;
+	int				must_eat_each;
+	long long		creation_time;
+	pthread_mutex_t	print;
+	pthread_mutex_t	finish;
+}	t_args;
+
+
+typedef struct t_philo
+{
+	t_args			*args;
+	pthread_t		thread;
+	pthread_mutex_t	fork;
+	int				n_eating;
+	int				index;
+	long long		last_meal;
 	int				finish;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	mutex;
-	t_philo			*philos;
-	int				die;
-	struct timeval	creation_time;
-}				t_infos;
+	struct t_philo	*next;
+}	t_philo;
 
-/********   utils  ********/
-long long	time_in_ms(struct timeval now);
-int			ft_atoi(const char *str);
-int			print_error(char *str);
-int			ft_alloc(void *src, size_t size);
-void		print_routine(t_philo *philos, char *str);
-
-/*********  parsing    ********/
-int			initialize(t_infos *infos, int ac, char **av);
-
-/***** routine ****/
-void		*routine(void *av);
-void		*check_philo_die(void *av);
-void		*check_philos_eat(void *av);
+void		add_back(t_philo **philos, t_philo *philo);
+t_philo		*new_node(t_philo *node, int index, t_args *args);
+void		ft_usleep(long long time);
+long long	get_time(void);
+long		ft_atoi(char *str);
+int			check_args(char **av);
+int			read_args(t_args **args, char **av, int ac);
+int			inits_philos(t_philo**philos, char **av, int ac);
+int 		philos_list(t_philo **philos, int n, t_args *args);
+void		free_philos(t_philo *philos, int x);
+void		take_forks(t_philo *philo, int x);
+void    	print_routine(t_philo *philo, char *str);
+int 		init_sim(t_philo **philos);
+void    	*routine(void *ptr);
+int 		dead_of_philo(t_philo **philo);
 
 #endif
