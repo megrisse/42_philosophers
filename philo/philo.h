@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/14 22:09:36 by megrisse          #+#    #+#             */
+/*   Updated: 2022/08/14 22:50:09 by megrisse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 # ifndef PHILO_H
 # define PHILO_H
@@ -21,7 +33,6 @@ typedef struct t_args
 	int				must_eat_each;
 	long long		creation_time;
 	pthread_mutex_t	print;
-	pthread_mutex_t	finish;
 }	t_args;
 
 
@@ -52,5 +63,7 @@ void    	print_routine(t_philo *philo, char *str);
 int 		init_sim(t_philo **philos);
 void    	*routine(void *ptr);
 int 		dead_of_philo(t_philo **philo);
+void		destroy_mutexes(t_philo *philo);
+
 
 #endif

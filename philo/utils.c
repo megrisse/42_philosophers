@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/14 22:09:40 by megrisse          #+#    #+#             */
+/*   Updated: 2022/08/14 22:50:31 by megrisse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 long	ft_atoi(char *str)
@@ -31,7 +43,7 @@ void	ft_usleep(long long time)
 
 	start = get_time();
 	while (get_time() - start < time)
-		usleep(50);
+		usleep(100);
 }
 
 long long	get_time(void)
@@ -48,10 +60,9 @@ void	free_philos(t_philo *philos, int x)
 	int		i;
 
 	ptr = philos;
-	i = x;
 	i = 0;
-	//if (x == 1)
-	//	destroy_mutex(philos);
+	if (x == 1)
+		destroy_mutexes(philos);
 	if (!philos)
 		return ;
 	while (1)
@@ -67,4 +78,19 @@ void	free_philos(t_philo *philos, int x)
 		ptr = philos;
 		i++;
 	}
+}
+
+void	destroy_mutexes(t_philo *philo)
+{
+	t_philo	*ptr;
+
+	ptr = philo;
+	while (ptr->index != ptr->args->n_philo)
+	{
+		usleep(50);
+		pthread_mutex_destroy(&ptr->fork);
+		ptr = ptr->next;
+	}
+	pthread_mutex_destroy(&ptr->fork);
+	pthread_mutex_destroy(&philo->args->print);
 }

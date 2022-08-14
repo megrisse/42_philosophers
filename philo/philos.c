@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philos.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/14 22:09:18 by megrisse          #+#    #+#             */
+/*   Updated: 2022/08/14 22:43:06 by megrisse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 
@@ -11,7 +23,7 @@ int main(int ac, char **av)
     if (inits_philos(&philos, av, ac) != SUCCES)
         return (ERROR);
     if (init_sim(&philos) != SUCCES)
-        return (ERROR);
+        return (free_philos(philos, 1), ERROR);
     if (dead_of_philo(&philos) != SUCCES)
-        return (ERROR);
+        return (free_philos(philos, 1), ERROR);
 }
