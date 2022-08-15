@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:36 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/14 22:50:09 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/15 03:05:02 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			inits_philos(t_philo**philos, char **av, int ac);
 int 		philos_list(t_philo **philos, int n, t_args *args);
 void		free_philos(t_philo *philos, int x);
 void		take_forks(t_philo *philo, int x);
-void    	print_routine(t_philo *philo, char *str);
+void    	print_routine(t_philo *philo, char *str, int key);
 int 		init_sim(t_philo **philos);
 void    	*routine(void *ptr);
 int 		dead_of_philo(t_philo **philo);

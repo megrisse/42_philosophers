@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:48 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/14 22:25:09 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/15 03:05:56 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void    take_forks(t_philo *philo, int x)
     if (x == 0)
     {
         pthread_mutex_lock(&philo->fork);
-        print_routine(philo, "taking a fork");
+        print_routine(philo, "taking a fork", 0);
         pthread_mutex_lock(&philo->next->fork);
-        print_routine(philo, "taking a fork");
+        print_routine(philo, "taking a fork", 0);
     }
     else if (x == 1)
     {
@@ -98,13 +98,13 @@ void    *routine(void *ptr)
     while (philo->args->must_eat_each != philo->n_eating)
     {
         take_forks(philo, 0);
-        print_routine(philo, "is eating");
+        print_routine(philo, "is eating", 0);
         ft_usleep(philo->args->time_to_eat * 1000);
         philo->last_meal = get_time();
         take_forks(philo, 1);
-        print_routine(philo, "is sleeping");
+        print_routine(philo, "is sleeping", 0);
         ft_usleep(philo->args->time_to_sleep * 1000);
-        print_routine(philo, "is thinking");
+        print_routine(philo, "is thinking", 0);
         philo->n_eating++;
     }
     philo->finish = 1;
