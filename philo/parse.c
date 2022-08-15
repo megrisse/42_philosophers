@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:53 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/14 22:09:54 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/15 04:29:55 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	read_args(t_args **args, char **av, int ac)
 t_philo	*new_node(t_philo *node, int index, t_args *args)
 {
 	node = (t_philo *)malloc(sizeof(t_philo));
-    //if (!node)
-    //    return (NULL)
+	if (!node)
+		return (NULL);
 	node->index = index + 1;
 	node->args = args;
 	node->next = NULL;
