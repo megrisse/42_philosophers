@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:36 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 19:30:12 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 23:00:22 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <string.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <limits.h>
 # include <sys/time.h>
 
 # define SUCCES 0

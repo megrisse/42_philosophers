@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:48 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 20:39:23 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 22:23:29 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	init_sim(t_philo **philos)
 		ptr = ptr->next;
 	}
 	i = -1;
-	ptr = *philos;
 	ptr->args->creation_time = get_time();
 	while (++i < ptr->args->n_philo)
 	{
@@ -104,8 +103,8 @@ void	*routine(void *ptr)
 		philo->is_die = 1;
 		philo->last_meal = get_time();
 		ft_usleep(philo->args->time_to_eat);
-		philo->is_die = 0;
 		take_forks(philo, 1);
+		philo->is_die = 0;
 		print_routine(philo, "is sleeping", 0);
 		ft_usleep(philo->args->time_to_sleep);
 		print_routine(philo, "is thinking", 0);

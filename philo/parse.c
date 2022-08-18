@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:53 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 20:38:21 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 23:22:37 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@ int	check_args(char **av)
 	return (SUCCES);
 }
 
+int	protect(t_args *args, int ac)
+{
+	if (args->n_philo > 200 && args->n_philo <= 0)
+		return (ERROR);
+	if (args->time_to_die < 60 || args->time_to_eat < 60
+		|| args->time_to_sleep < 60)
+		return (ERROR);
+	if (ac == 6 && args->must_eat_each <= 0)
+		return (ERROR);
+	return (SUCCES);
+}
+
 int	read_args(t_args **args, char **av, int ac)
 {
 	if (check_args(av) != 0)
@@ -45,8 +57,10 @@ int	read_args(t_args **args, char **av, int ac)
 	(*args)->must_eat_each = -1;
 	if (ac == 6)
 		(*args)->must_eat_each = ft_atoi(av[5]);
-	// (*args)->creation_time = get_time();
-	return (SUCCES);
+	if (protect(*args, ac) != SUCCES)
+		return (ERROR);
+	else
+		return (SUCCES);
 }
 
 t_philo	*new_node(t_philo *node, int index, t_args *args)

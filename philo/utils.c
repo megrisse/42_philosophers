@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:40 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 16:33:32 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 23:05:39 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,18 @@
 long	ft_atoi(char *str)
 {
 	long	resultat;
-	long	signe;
 	int		i;
 
 	resultat = 0;
-	signe = 1;
 	i = 0;
-	while (((str[i] >= 9) && (str[i] <= 13)) || (str[i] == ' '))
-		i++;
-	if ((str[i] == '+') || (str[i] == '-'))
-	{
-		if (str[i] == '-')
-			signe = -signe;
-		i++;
-	}
 	while ((str[i] >= '0') && (str[i] <= '9'))
 	{
 		resultat = (resultat * 10) + (str[i] - 48);
 		i++;
 	}
-	return (resultat * signe);
+	if (resultat > INT_MAX)
+		return (-1);
+	return (resultat);
 }
 
 void	ft_usleep(long long time)
