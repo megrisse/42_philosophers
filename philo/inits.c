@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:48 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/15 04:28:29 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:40:56 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,18 @@ int	init_sim(t_philo **philos)
 	t_philo	*ptr;
 
 	ptr = *philos;
-	i = 0;
+	i = -1;
 	if (pthread_mutex_init(&ptr->args->print, NULL) != SUCCES)
 		return (ERROR);
-	while (i++ < (*philos)->args->n_philo)
+	while (++i < ptr->args->n_philo)
 	{
 		if (pthread_mutex_init(&ptr->fork, NULL) != SUCCES)
 			return (ERROR);
 		ptr = ptr->next;
 	}
-	i = 0;
+	i = -1;
 	ptr = *philos;
-	while (i++ < (*philos)->args->n_philo)
+	while (++i < ptr->args->n_philo)
 	{
 		if (pthread_create(&ptr->thread, NULL,
 				&routine, (void *)ptr) != SUCCES)
@@ -92,20 +92,18 @@ void	*routine(void *ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr;
-	philo->n_eating = 0;
-	philo->finish = 0;
 	if (philo->index % 2 == 0)
-		ft_usleep((philo->args->time_to_die / 2) * 1000);
+		ft_usleep(50);
 	philo->last_meal = get_time();
 	while (philo->args->must_eat_each != philo->n_eating)
 	{
 		take_forks(philo, 0);
 		print_routine(philo, "is eating", 0);
-		ft_usleep(philo->args->time_to_eat * 1000);
+		ft_usleep(philo->args->time_to_eat);
 		philo->last_meal = get_time();
 		take_forks(philo, 1);
 		print_routine(philo, "is sleeping", 0);
-		ft_usleep(philo->args->time_to_sleep * 1000);
+		ft_usleep(philo->args->time_to_sleep);
 		print_routine(philo, "is thinking", 0);
 		philo->n_eating++;
 	}

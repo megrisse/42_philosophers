@@ -6,16 +6,16 @@
 #    By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/14 22:09:50 by megrisse          #+#    #+#              #
-#    Updated: 2022/08/14 22:09:51 by megrisse         ###   ########.fr        #
+#    Updated: 2022/08/16 20:20:24 by megrisse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -g -Wall -Wextra -Werror #-fsanitize=thread
 
-SRC = inits.c parse.c philos.c utils.c routine.c
+SRC = inits.c parse.c philos.c utils.c routine.c  
 
 OBJ = $(SRC:.c=.o)
 

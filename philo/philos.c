@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:18 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/15 04:39:34 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:41:06 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	main(int ac, char **av)
 		return (printf("ARGUMENTS ERROR\n"), ERROR);
 	if (inits_philos(&philos, av, ac) != SUCCES)
 		return (ERROR);
+	philos->n_eating = 0;
+	philos->finish = 0;
 	if (init_sim(&philos) != SUCCES)
 		return (free_philos(philos, 1), ERROR);
 	if (dead_of_philo(&philos) != SUCCES)
