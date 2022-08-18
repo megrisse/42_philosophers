@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:53 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 16:35:13 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 20:38:21 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	read_args(t_args **args, char **av, int ac)
 	(*args)->must_eat_each = -1;
 	if (ac == 6)
 		(*args)->must_eat_each = ft_atoi(av[5]);
-	(*args)->creation_time = get_time();
+	// (*args)->creation_time = get_time();
 	return (SUCCES);
 }
 

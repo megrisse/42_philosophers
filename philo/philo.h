@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:36 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/15 04:38:48 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 19:30:12 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct t_philo
 	int				index;
 	long long		last_meal;
 	int				finish;
+	int				is_die;
 	struct t_philo	*next;
 }	t_philo;
 

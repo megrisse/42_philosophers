@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:48 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 16:40:56 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 20:39:23 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	init_sim(t_philo **philos)
 	}
 	i = -1;
 	ptr = *philos;
+	ptr->args->creation_time = get_time();
 	while (++i < ptr->args->n_philo)
 	{
 		if (pthread_create(&ptr->thread, NULL,
@@ -76,9 +77,9 @@ void	take_forks(t_philo *philo, int x)
 	if (x == 0)
 	{
 		pthread_mutex_lock(&philo->fork);
-		print_routine(philo, "taking a fork", 0);
+		print_routine(philo, "taking his fork", 0);
 		pthread_mutex_lock(&philo->next->fork);
-		print_routine(philo, "taking a fork", 0);
+		print_routine(philo, "taking next fork", 0);
 	}
 	else if (x == 1)
 	{
@@ -94,13 +95,16 @@ void	*routine(void *ptr)
 	philo = (t_philo *)ptr;
 	if (philo->index % 2 == 0)
 		ft_usleep(50);
+	philo->is_die = 0;
 	philo->last_meal = get_time();
 	while (philo->args->must_eat_each != philo->n_eating)
 	{
 		take_forks(philo, 0);
 		print_routine(philo, "is eating", 0);
-		ft_usleep(philo->args->time_to_eat);
+		philo->is_die = 1;
 		philo->last_meal = get_time();
+		ft_usleep(philo->args->time_to_eat);
+		philo->is_die = 0;
 		take_forks(philo, 1);
 		print_routine(philo, "is sleeping", 0);
 		ft_usleep(philo->args->time_to_sleep);

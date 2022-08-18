@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:59 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 16:42:41 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/18 20:32:07 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@ int	dead_of_philo(t_philo **philo)
 	while (1)
 	{
 		if (ptr->finish == 0 && get_time() - ptr->last_meal
-			> ptr->args->time_to_die)
+			> ptr->args->time_to_die && ptr->is_die == 0)
 			return (print_routine(ptr, "is dead", 1), ERROR);
 		if (ptr->finish == 1)
 			i++;
 		if (i == ptr->args->must_eat_each)
 			break ;
+		ptr = ptr->next;
 	}
-	ft_usleep(ptr->args->time_to_die / 2);
-	pthread_mutex_unlock(&ptr->args->print);
 	return (SUCCES);
 }
