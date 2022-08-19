@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:48 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 22:23:29 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/19 01:12:13 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	*routine(void *ptr)
 
 	philo = (t_philo *)ptr;
 	if (philo->index % 2 == 0)
-		ft_usleep(50);
+		ft_usleep(philo->args->time_to_eat / 2);
 	philo->is_die = 0;
 	philo->last_meal = get_time();
 	while (philo->args->must_eat_each != philo->n_eating)
@@ -101,7 +101,7 @@ void	*routine(void *ptr)
 		take_forks(philo, 0);
 		print_routine(philo, "is eating", 0);
 		philo->is_die = 1;
-		philo->last_meal = get_time();
+		change_last_meal(&philo, 0);
 		ft_usleep(philo->args->time_to_eat);
 		take_forks(philo, 1);
 		philo->is_die = 0;

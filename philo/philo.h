@@ -6,7 +6,7 @@
 /*   By: megrisse <megrisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 22:09:36 by megrisse          #+#    #+#             */
-/*   Updated: 2022/08/18 23:00:22 by megrisse         ###   ########.fr       */
+/*   Updated: 2022/08/19 01:08:17 by megrisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct t_args
 	int				time_to_sleep;
 	int				must_eat_each;
 	long long		creation_time;
+	pthread_mutex_t	time;
 	pthread_mutex_t	print;
 }	t_args;
 
@@ -54,6 +55,7 @@ void		ft_usleep(long long time);
 long long	get_time(void);
 void		free_philos(t_philo *philos, int x);
 void		print_routine(t_philo *philo, char *str, int key);
+int			change_last_meal(t_philo **philo, int key);
 
 /********** creat philos list **********/
 void		add_back(t_philo **philos, t_philo *philo);
